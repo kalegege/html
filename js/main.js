@@ -6,7 +6,7 @@ function start() {
         .append("p")
         .text("load text with d3.js! today");
 }
-function echarts() {
+function echarts1() {
     var myChart=echarts.init(document.getElementById('main'));
     var option={
         title:{
