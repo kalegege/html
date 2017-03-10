@@ -72,3 +72,94 @@ function svgExample() {
         .attr("stroke","grey")
         .attr("stroke-width",5);
 }
+
+function visualizeOranges() {
+    var orangeData=[10,30,50,100];
+    
+    var canvas=d3.select(".orangeContainer")
+        .append("svg")
+        .attr("width",768)
+        .attr("height",1024)
+    
+    var oranges = canvas.selectAll("circle")
+        .data(orangeData)
+        .enter()
+            .append("circle")
+        .attr("fill","orange")
+        .attr("cx",function (d,i) {
+            return d + (i*100);
+        })
+        .attr("cy",function (d) {
+            return d;
+        })
+        .attr("r",function (d) {
+            return d;
+        });
+}
+
+function scaling() {
+    var graphData=[10,1200],
+        w=200,
+        h=800;
+
+    var scaling=d3.scaleLinear()
+        .domain([0,1200])
+        .range([0,w]);
+    
+    var canvas= d3.select(".graphContainer")
+        .append("svg")
+        .attr("width",w)
+        .attr("height",h);
+    
+    var graphBars=canvas.selectAll("rect")
+        .data(graphData)
+        .enter()
+        .append("rect")
+        .attr("fill","pink")
+        .attr("width",function (d) {
+            return scaling(d);
+        })
+        .attr("height",20)
+        .attr("y",function (d,i) {
+            return i*50;
+        })
+}
+
+function axisGroups() {
+    var graphData=[10,1200],
+        w=500,
+        h=800;
+
+
+    var scaling=d3.scaleLinear()
+        .domain([0,1200])
+        .range([0,w]);
+
+    var axis=d3.axisBottom()
+        .ticks(5)
+        .scale(scaling);
+
+    var canvas=d3.select(".graphContainer")
+        .append("svg")
+        .attr("width",w)
+        .attr("height",h)
+        .append("g")
+        .attr("transform","translate(20,50)");
+
+    var graphBars=canvas.selectAll("rect")
+        .data(graphData)
+        .enter()
+        .append("rect")
+        .attr("fill","pink")
+        .attr("width",function (d) {
+            return scaling(d);
+        })
+        .attr("height",20)
+        .attr("y",function (d,i) {
+            return i*50;
+        });
+
+    canvas.append("g")
+        .attr("transform","translate(0,200)")
+        .call(axis);
+}
