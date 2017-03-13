@@ -376,6 +376,7 @@ function histogram() {
         });
 }
 
+//中国地图
 function chinaMap() {
     var width  = 1000;
     var height = 1000;
