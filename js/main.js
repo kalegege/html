@@ -232,3 +232,216 @@ function transitions() {
         .attr("transform", "translate(200,200)")
 
 }
+
+//绘制饼图
+function pie() {
+    var w=800,
+        h=600;
+    var outerRadius = w/4,
+        innerRadius = 0;
+
+    var color=d3.scaleOrdinal(d3.schemeCategory10);
+
+    var dataset=[30,10,43,55,13];
+
+    var pie =d3.pie();
+
+    var piedata=pie(dataset);
+
+    var arc=d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius);
+
+    var svg=d3.select(".pieContainer")
+        .append("svg")
+        .attr("width",w)
+        .attr("height",h);
+
+    var arcs=svg.selectAll("g")
+        .data(piedata)
+        .enter()
+        .append("g")
+        .attr("transform","translate("+ (w/2) +","+ (w/2) +")");
+
+    arcs.append("path")
+        .attr("fill",function (d,i) {
+            return color(i);
+        })
+        .attr("d",function (d) {
+            return arc(d);
+        });
+
+
+    arcs.append("text")
+        .attr("transform",function (d) {
+            return "translate("+ arc.centroid(d) +")";
+        })
+        .attr("text-anchor","middle")
+        .text(function (d) {
+            return d.data;
+        })
+}
+//柱状图
+function histogram() {
+    var rand=d3.randomNormal(0,25);
+    var dataset=[];
+    for(var i=0;i<100;i++){
+        dataset.push(rand());
+    }
+    var bin_num=15;
+    var histogram=d3.histogram()
+        .thresholds(bin_num);
+
+    var data=histogram(dataset);
+
+    var max_height=400;
+    var rect_step=30;
+    var heights=[];
+    for(var i=0;i<data.length;i++){
+        heights.push(data[i].x1);
+    }
+    var yScale=d3.scaleLinear()
+        .domain([d3.min(heights),d3.max(heights)])
+        .range([0,max_height]);
+
+    var svg=d3.select(".pieContainer")
+        .append("svg")
+        .attr("width",800)
+        .attr("height",600);
+    
+    //绘制图形 
+    var graphics = svg.append("g")
+        .attr("transform","translate(30,20)");
+
+//绘制矩形 
+    graphics.selectAll("rect")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("x",function(d,i){
+            return i * rect_step;
+        })
+        .attr("y", function(d,i){
+            return max_height - yScale(d.x1);
+        })
+        .attr("width", function(d,i){
+            return rect_step - 2;
+        })
+        .attr("height", function(d){
+            return yScale(d.x1);
+        })
+        .attr("fill","steelblue");
+
+//绘制坐标轴的直线 
+    graphics.append("line")
+        .attr("stroke","black")
+        .attr("stroke-width","1px")
+        .attr("x1",0)
+        .attr("y1",max_height)
+        .attr("x2",data.length * rect_step)
+        .attr("y2",max_height);
+
+//绘制坐标轴的分隔符直线 
+    graphics.selectAll(".linetick")
+        .data(data)
+        .enter()
+        .append("line")
+        .attr("stroke","black")
+        .attr("stroke-width","1px")
+        .attr("x1",function(d,i){
+            return i * rect_step + rect_step/2;
+        })
+        .attr("y1",max_height)
+        .attr("x2",function(d,i){
+            return i * rect_step + rect_step/2;
+        })
+        .attr("y2",max_height + 5);
+
+//绘制文字 
+    graphics.selectAll("text")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("font-size","10px")
+        .attr("x",function(d,i){
+            return i * rect_step;
+        })
+        .attr("y", function(d,i){
+            return max_height;
+        })
+        .attr("dx",rect_step/2 - 8)
+        .attr("dy","15px")
+        .text(function(d){
+            return Math.floor(d.x0);
+        });
+}
+
+function chinaMap() {
+    var width  = 1000;
+    var height = 1000;
+
+    var svg = d3.select(".chinamap").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(0,0)");
+
+    svg.selectAll("p")
+        .text("china map")
+        .append("p")
+        .attr("x",100)
+        .attr("y",100);
+
+    var projection=d3.geoMercator()
+        .center([107,31])
+        .scale(850)
+        .translate([width/2,height/2]);
+
+    var path=d3.geoPath()
+        .projection(projection);
+
+    // var dataset = [ 2.5 , 2.1 , 1.7 , 1.3 , 0.9 ];
+
+    var linear = d3.scaleLinear()
+        .domain([0, 34])
+        .range([0, 20]);
+
+    var color=d3.scaleOrdinal(d3.schemeCategory20c);
+
+    d3.json("resources/china.geojson", function(error, root) {
+
+        if (error)
+            return console.error(error);
+        console.log(root.features);
+
+        svg.selectAll("path")
+            .data( root.features )
+            .enter()
+            .append("path")
+            .attr("stroke","#000")
+            .attr("stroke-width",1)
+            .attr("fill", function(d,i){
+                return color(linear(i));
+            })
+            .attr("d", path )   //使用地理路径生成器
+            .on("mouseover",function(d,i){
+                d3.select(this)
+                    .attr("fill","yellow");
+                d3.select("#main").append("p")
+                    .text(d.properties.name+d.properties.id);
+            })
+            .on("mouseout",function(d,i){
+                d3.select(this)
+                    .attr("fill",color(i));
+                var p = d3.select("#main").selectAll("p");
+                p.remove();
+            })
+            .on("click",function (d,i) {
+                d3.select(this)
+                    .attr("fill","red");
+            });
+
+
+    });
+
+}
