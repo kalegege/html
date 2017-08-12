@@ -1,0 +1,8 @@
+#test{
+    background: url(../resources/logo.png) no-repeat  36px 2px;
+    height: 18px;
+    width: 18px;
+    color: black;
+    border: 1px solid #cccccc;
+    padding: 0 20px 0 0;
+}

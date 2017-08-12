@@ -6,6 +6,7 @@ function start() {
         .append("p")
         .text("load text with d3.js! today");
 }
+
 function echarts1() {
     var myChart = echarts.init(document.getElementById('main'));
     var option = {
@@ -445,4 +446,33 @@ function chinaMap() {
 
     });
 
+    svg.selectAll("text")
+        .enter()
+        .append("p")
+        .attr("x",700)
+        .attr("y",400)
+        .attr("dx","10px")
+        .attr("dy","10px")
+        .text("aabbcceee");
+
+}
+
+var Count=false,NO=1;
+function addRow(){
+    Count=!Count;
+    var testTbl=document.getElementById("testTbl");
+
+//添加一行
+    var newTr = testTbl.insertRow(testTbl.rows.length);
+//添加两列
+    var newTd0 = newTr.insertCell();
+    var newTd1 = newTr.insertCell();
+    var newTd2 = newTr.insertCell();
+//设置列内容和属性
+    if(Count){newTr.style.background="#FFE1FF";}
+    else {newTr.style.background="#FFEFD5";}
+    newTd0.innerHTML = '<input type=checkbox id="box4">';
+    NO++;
+    newTd1.innerText="第"+ NO+"行";
+    newTd2.innerHTML="kalegege";
 }

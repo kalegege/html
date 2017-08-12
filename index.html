@@ -5,33 +5,141 @@
     <title>Title</title>
     <!--<script src="js/echarts.js"></script>-->
     <script src="js/d3/d3.js"></script>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/jquery.dataTables.js"></script>
     <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/mystyle.css" type="text/css"/>
+    <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css"/>
     <style>
-        svg{
-            border:1px solid #000;
+        svg {
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-    <div id="main"  style="width:600px;height:400px;"></div>
-    <div class="orangeContainer" ></div>
-    <div class="graphContainer" ></div>
-    <div class="transitionsContainer" ></div>
-    <div class="pieContainer" ></div>
-    <div class="histogram"></div>
-    <div class="chinamap"></div>
+<div id="main" style="width:600px;height:200px;"></div>
+<div class="orangeContainer"></div>
+<div class="graphContainer"></div>
+<div class="transitionsContainer"></div>
+<div class="pieContainer"></div>
+<div class="histogram"></div>
+<div class="chinamap"></div>
+<span id="test" onclick="window.location.href='http://www.baidu.com'">上移</span>
+<img src="resources/logo.png" onclick="window.location.href='http://www.baidu.com'"/>
 
-    <script type="text/javascript">
-//       echarts1();
-//        svgExample();
-//        visualizeOranges();
-//        scaling();
-//        axisGroups();
-//        enterExamlpes();
-//        transitions();
-//        pie();
-//        histogram();
-        chinaMap();
-    </script>
+<table id="table_id" class="display">
+    <thead>
+    <tr>
+        <th>地推姓名</th>
+        <th>地推ID</th>
+        <th>发展群主数量</th>
+        <th>群主购卡数量</th>
+        <th>群主被赠卡数量</th>
+        <th>群主划拨数量</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--<tr>-->
+    <!--<td>张三</td>-->
+    <!--<td>5</td>-->
+    <!--<td>300</td>-->
+    <!--<td>1000</td>-->
+    <!--<td>100</td>-->
+    <!--<td>800</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td>李四</td>-->
+    <!--<td>6</td>-->
+    <!--<td>400</td>-->
+    <!--<td>2000</td>-->
+    <!--<td>200</td>-->
+    <!--<td>1300</td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td>总计</td>-->
+    <!--<td></td>-->
+    <!--<td>700</td>-->
+    <!--<td>3000</td>-->
+    <!--<td>300</td>-->
+    <!--<td>2100</td>-->
+    <!--</tr>-->
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    var data = [
+        {
+            "name": "张三",
+            "id": 4,
+            "num_develop": 300,
+            "num_buy": 2000,
+            "num_send": 100,
+            "num_arrange": 800
+        },
+        {
+            "name": "李四",
+            "id": 5,
+            "num_develop": 200,
+            "num_buy": 1000,
+            "num_send": 900,
+            "num_arrange": 1800
+        },
+        {
+            "name": "总计",
+            "id": "",
+            "num_develop": 500,
+            "num_buy": 3000,
+            "num_send": 1000,
+            "num_arrange": 2600
+        }
+    ];
+    $(document).ready(function () {
+        $('#table_id').DataTable({
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            },
+            ajax:{
+                url:'http://192.168.1.104:5678/alarm/getActors',
+                data:'data'
+            },
+            ordering: false,
+//            data: data,
+            columns: [
+                {data: "name"}, {data: "pId"}, {data: "numDevelop"}, {data: "numBuy"}, {data: "numSend"}, {data: "numArrange"}
+            ]
+        });
+    });
+    //       echarts1();
+    //        svgExample();
+    //        visualizeOranges();
+    //        scaling();
+    //        axisGroups();
+    //        enterExamlpes();
+    //        transitions();
+    //        pie();
+    //        histogram();
+    chinaMap();
+</script>
 </body>
 </html>
