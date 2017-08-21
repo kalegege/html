@@ -605,10 +605,10 @@ function line() {
             country: "china",
             gdp: [[2000, 100], [2001, 200], [2002, 900]]
         }
-        // , {
-        //     country: "japan",
-        //     gdp: [[2000, 800], [2001, 300], [2002, 100]]
-        // }
+        , {
+            country: "japan",
+            gdp: [[2000, 800], [2001, 300], [2002, 100]]
+        }
     ];
 
     var padding = {top: 50, right: 50, bottom: 50, left: 50};
@@ -686,8 +686,10 @@ function line() {
         .attr("width", width - padding.left - padding.right)
         .attr("height", height - padding.top - padding.bottom)
         .on("mouseover", function () {
-            focusLine.style("display","null");
-            focusCircle.style("display","null");
+            console.log("显示线");
+            focusLine.style("display","");
+            console.log("显示点");
+            focusCircle.style("display","");
         })
         .on("mouseout", function () {
             focusLine.style("display","none");
@@ -710,9 +712,13 @@ function line() {
         .attr("class","focusLine")
         .style("display","none");
 
-    var vLine=focusLine.append("line");
+    var vLine=focusLine.append("line")
+        .attr("stroke-dasharray",5)
+        .attr("stroke","black");
 
-    var hLine=focusLine.append("line");
+    var hLine=focusLine.append("line")
+        .attr("stroke-dasharray",5)
+        .attr("stroke","black");
 
     function mousemove() {
 
@@ -739,19 +745,26 @@ function line() {
         var focusX=xScale(x1)+padding.left;
         var focusY=yScale(y1)+padding.top;
 
+        console.log("更新显示点坐标");
+
         focusCircle.attr("transform","translate("+focusX+","+focusY+")");
+        console.log("更新显示点文字");
 
         focusCircle.select("text").text(x1+"年的gdp"+y1+"亿美元");
+
+        console.log("更新显示线位置 竖线");
 
         vLine.attr("x1",focusX)
             .attr("y1",focusY)
             .attr("x2",focusX)
             .attr("y2",height-padding.bottom);
 
+        console.log("更新显示线位置 横线");
+
         hLine.attr("x1",focusX)
             .attr("y1",focusY)
             .attr("x2",padding.left)
-            .attr("y2",focusY)
+            .attr("y2",focusY);
     }
 
 }
