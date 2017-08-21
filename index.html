@@ -5,33 +5,42 @@
     <title>Title</title>
     <!--<script src="js/echarts.js"></script>-->
     <script src="js/d3/d3.js"></script>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/jquery.dataTables.js"></script>
     <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/mystyle.css" type="text/css"/>
+    <link rel="stylesheet" href="css/jquery.dataTables.css" type="text/css"/>
     <style>
-        svg{
-            border:1px solid #000;
+        svg {
+            border: 1px solid #000;
         }
     </style>
 </head>
 <body>
-    <div id="main"  style="width:600px;height:400px;"></div>
-    <div class="orangeContainer" ></div>
-    <div class="graphContainer" ></div>
-    <div class="transitionsContainer" ></div>
-    <div class="pieContainer" ></div>
-    <div class="histogram"></div>
-    <div class="chinamap"></div>
+<div id="main" style="width:600px;height:200px;"></div>
+<div class="orangeContainer"></div>
+<div class="graphContainer"></div>
+<div class="transitionsContainer"></div>
+<div class="pieContainer"></div>
+<div class="lineContainer"></div>
+<div class="histogram"></div>
+<div class="chinamap"></div>
+<span id="test" onclick="window.location.href='http://www.baidu.com'">上移</span>
+<img src="resources/logo.png" onclick="window.location.href='http://www.baidu.com'"/>
 
-    <script type="text/javascript">
-//       echarts1();
-//        svgExample();
-//        visualizeOranges();
-//        scaling();
-//        axisGroups();
-//        enterExamlpes();
-//        transitions();
-//        pie();
-//        histogram();
-        chinaMap();
-    </script>
+<script type="text/javascript">
+    //       echarts1();
+    //        svgExample();
+    //        visualizeOranges();
+    //        scaling();
+    //        axisGroups();
+    //        enterExamlpes();
+    //        transitions();
+//            pie();
+//            newPie();
+            line();
+    //        histogram();
+//    chinaMap();
+</script>
 </body>
 </html>
