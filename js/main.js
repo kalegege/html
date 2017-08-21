@@ -440,6 +440,10 @@ function chinaMap() {
             .on("click",function (d,i) {
                 d3.select(this)
                     .attr("fill","red");
+            })
+            .on("dblclick",function (d,i) {
+                d3.select(this)
+                    .attr("fill","black");
             });
 
 
