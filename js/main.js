@@ -822,8 +822,10 @@ function line() {
         .append("div")
         .attr("class","tooltip")
         .style("opacity",0.0);
+
     var title= tooltip.append("div")
         .attr("class","title");
+
     var des=tooltip.selectAll(".des")
         .data(dataset)
         .enter()
@@ -837,10 +839,9 @@ function line() {
 
     var vLine=svg.append("line")
         .attr("class","focusLine")
-        .style("display","none");
-
-
-
+        .style("display","none")
+        .attr("stroke-dasharray",5)
+        .attr("stroke","black");
 }
 
 
