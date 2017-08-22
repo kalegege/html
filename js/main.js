@@ -685,39 +685,45 @@ function line() {
         .attr("width", width - padding.left - padding.right)
         .attr("height", height - padding.top - padding.bottom)
         .on("mouseover", function () {
-            console.log("显示线");
-            focusLine.style("display","");
-            console.log("显示点");
-            focusCircle.style("display","");
+            // focusLine.style("display","");
+            // focusCircle.style("display","");
+
+            tooltip.style("left",(d3.event.pageX)+"px")
+                .style("top",(d3.event.pageY+20)+"px")
+                .style("opacity",1.0);
+            vLine.style("display","");
         })
         .on("mouseout", function () {
-            focusLine.style("display","none");
-            focusCircle.style("display","none");
+            // focusLine.style("display","none");
+            // focusCircle.style("display","none");
+
+            tooltip.style("opacity",0.0);
+            vLine.style("display","none");
         })
-        .on("mousemove", mousemove);
-
-    var focusCircle=svg.append("g")
-        .attr("class","focusCircle")
-        .style("display","none");
-
-    focusCircle.append("circle")
-        .attr("r",4.5);
-
-    focusCircle.append("text")
-        .attr("dx",10)
-        .attr("dy","1em");
-
-    var focusLine=svg.append("g")
-        .attr("class","focusLine")
-        .style("display","none");
-
-    var vLine=focusLine.append("line")
-        .attr("stroke-dasharray",5)
-        .attr("stroke","black");
-
-    var hLine=focusLine.append("line")
-        .attr("stroke-dasharray",5)
-        .attr("stroke","black");
+        .on("mousemove", mousemove1);
+    //
+    // var focusCircle=svg.append("g")
+    //     .attr("class","focusCircle")
+    //     .style("display","none");
+    //
+    // focusCircle.append("circle")
+    //     .attr("r",4.5);
+    //
+    // focusCircle.append("text")
+    //     .attr("dx",10)
+    //     .attr("dy","1em");
+    //
+    // var focusLine=svg.append("g")
+    //     .attr("class","focusLine")
+    //     .style("display","none");
+    //
+    // var vLine=focusLine.append("line")
+    //     .attr("stroke-dasharray",5)
+    //     .attr("stroke","black");
+    //
+    // var hLine=focusLine.append("line")
+    //     .attr("stroke-dasharray",5)
+    //     .attr("stroke","black");
 
     function mousemove() {
 
@@ -765,6 +771,75 @@ function line() {
             .attr("x2",padding.left)
             .attr("y2",focusY);
     }
+    function mousemove1() {
+
+        /*鼠标在透明区域调用*/
+        var data=dataset[0].gdp;
+
+        var mouseX=d3.mouse(this)[0]-padding.left;
+        var mouseY=d3.mouse(this)[1]-padding.top;
+
+        var x0=xScale.invert(mouseX);
+        var y0=yScale.invert(mouseY);
+
+        x0=Math.round(x0);
+
+        var bisect=d3.bisector(function (d) {
+            return d[0];
+        }).left;
+
+        var index=bisect(data,x0);
+
+        var year=x0;
+        var gdp=[];
+        for(var k=0;k<dataset.length;k++){
+            gdp[k]={country:dataset[k].country,
+            value:dataset[k].gdp[index][1]}
+        }
+        title.html("<strong>"+year+"年</strong>");
+
+        desColor.style("background-color",function (d,i) {
+            return colors[i];
+        });
+
+        desText.html(function (d,i) {
+            return gdp[i].country+"\t"+"<strong>"+gdp[i].value+"</strong>";
+        })
+
+        tooltip.style("left",(d3.event.pageX)+"px")
+            .style("top",(d3.event.pageY+20)+"px");
+
+        var vlx=xScale(data[index][0])+padding.left;
+
+        vLine.attr("x1",vlx)
+            .attr("y1",padding.top)
+            .attr("x2",vlx)
+            .attr("y2",height-padding.bottom);
+    }
+
+
+    var tooltip=svg.select("body")
+        .append("div")
+        .attr("class","tooltip")
+        .style("opacity",0.0);
+    var title= tooltip.append("div")
+        .attr("class","title");
+    var des=tooltip.selectAll(".des")
+        .data(dataset)
+        .enter()
+        .append("div");
+
+    var desColor=des.append("div")
+        .attr("class","desColor");
+
+    var desText=des.append("div")
+        .attr("class","desText");
+
+    var vLine=svg.append("line")
+        .attr("class","focusLine")
+        .style("display","none");
+
+
 
 }
 

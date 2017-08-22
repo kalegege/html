@@ -17,3 +17,30 @@
     fill: none;
     pointer-events: all;
 }
+.tooltip{
+    position: absolute;
+    width:120px;
+    height: auto;
+    font-family: SimSun-ExtB;
+    font-size: 14px;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    background-color: white;
+    border-radius: 5px;
+}
+.tooltip .title{
+    border-bottom: 1px solid #000;
+    text-align: center;
+}
+
+.tooltip .desColor{
+    width:10px;
+    height:10px;
+    float:left;
+    margin:9px 8px 1px 8px;
+}
+
+.tooltip .desText{
+    display: inline;
+}
