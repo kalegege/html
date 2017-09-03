@@ -624,7 +624,8 @@ function line() {
     }
 
     var xScale = d3.scaleLinear()
-        .domain([2000, 2002])
+        // .domain([2000, 2002])
+        .domain([new Date(2015, 0, 1), new Date(2016, 1, 1)])
         .range([0, width - padding.left - padding.right]);
 
     var yScale = d3.scaleLinear()
@@ -662,21 +663,30 @@ function line() {
 
     var xAxis = d3.axisBottom()
         .scale(xScale)
-        .ticks(5)
-        .tickFormat(d3.format("d"));
-
+        // .ticks(5)
+        // .tickFormat(d3.format("d"));
+        .tickFormat(d3.timeFormat("%Y年%m月"));
+        // .ticks(d3.timeDays, 1);
     var yAxis = d3.axisLeft()
         .scale(yScale);
 
     svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + padding.left + "," + (height - padding.bottom) + ")")
-        .call(xAxis);
+        .call(xAxis)
+        .append("text")
+        .attr("text-anchor","end")//字体尾部对齐
+        .text("年");
 
     svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(" + padding.left + "," + padding.top + ")")
-        .call(yAxis);
+        .call(yAxis)
+        .append("text")
+        .text("gdp")
+        .attr("transform","rotate(-90)")//text旋转-90°
+        .attr("text-anchor","end")//字体尾部对齐
+        .attr("dy","1em");//沿y轴平移一个字体的大小
 
     svg.append("rect")
         .attr("class", "overlay")
